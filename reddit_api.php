@@ -5,6 +5,8 @@ $reddit_me_url="https://oauth.reddit.com/api/v1/me";
 $reddit_inbox_url="https://oauth.reddit.com/message/inbox";
 $reddit_comment_url="https://oauth.reddit.com/api/comment";
 $reddit_read_message_url="https://oauth.reddit.com/api/read_message";
+$reddit_message_info_url="https://oauth.reddit.com/api/info";
+$reddit_base_url="https://oauth.reddit.com/";
 
 $reddit_access_token="";
 
@@ -80,7 +82,7 @@ function reddit_inbox() {
         return $data;
 }
 
-// Send public message
+// Send public or private message
 function reddit_comment($parent,$text) {
         global $reddit_comment_url;
         $parent_url=urlencode($parent);
@@ -89,7 +91,8 @@ function reddit_comment($parent,$text) {
         $result=reddit_send_query($reddit_comment_url,$query,"post");
         //var_dump($result);
         $data=json_decode($result);
-//      return TRUE;
+        if($data->success==TRUE) return TRUE;
+        else return FALSE;
 }
 
 // Mark message as read
@@ -100,5 +103,43 @@ function reddit_mark_read($id) {
 //echo "$query\n";
         $result=reddit_send_query($reddit_read_message_url,$query,"post");
         //var_dump($result);
+}
+
+// Get message info
+function reddit_get_message_info($id) {
+        global $reddit_message_info_url;
+        $id_url=urlencode($id);
+        $query="id=$id_url";
+//echo "$query\n";
+        $result=reddit_send_query($reddit_message_info_url,$query,"get");
+        $data=json_decode($result);
+//var_dump($data);
+        return $data->data->children[0];
+}
+
+function reddit_get_message_tree($id) {
+        global $reddit_base_url;
+
+        if(preg_match("/^[^_]+_(.+)$/",$id,$matches)) {
+                $id=$matches[1];
+        }
+        $url="${reddit_base_url}comments/$id";
+        $query="depth=1000&limit=10000";
+        $result=reddit_send_query($url,$query,"get");
+        $data=json_decode($result);
+//var_dump($data);
+        return $data;
+}
+
+function reddit_get_new_posts($subreddit) {
+        global $reddit_base_url;
+        $url="${reddit_base_url}${subreddit}/new";
+        $query="limit=100";
+//echo "$query\n";
+        $result=reddit_send_query($url,$query,"get");
+//var_dump($result);
+        $data=json_decode($result);
+//var_dump($data);
+        return $data->data->children[0];
 }
 ?>
