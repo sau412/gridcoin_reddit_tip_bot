@@ -4,7 +4,7 @@ require_once("reddit_api.php");
 require_once("db.php");
 require_once("core.php");
 
-$f=fopen("/tmp/gridcoin_tip_bot_lockfile","w");
+$f=fopen("/tmp/gridcoin_reddit_tip_bot_lockfile","w");
 if($f) {
         echo "Checking locks\n";
         if(!flock($f,LOCK_EX|LOCK_NB)) {
