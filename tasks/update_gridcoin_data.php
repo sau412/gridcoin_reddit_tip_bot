@@ -3,15 +3,11 @@
 if(!isset($argc)) die();
 
 // Gridcoinresearch send rewards
-require_once("settings.php");
-require_once("db.php");
-require_once("core.php");
-require_once("gridcoin_web_wallet.php");
-require_once("reddit_api.php");
-
-// Gridcoin online wallet API key
-$grc_api_url="https://fozzywallet.arikado.ru/grc/api.php";
-$grc_api_key="8cbd2c814a5a70430ee3607c400af819";
+require_once("../lib/settings.php");
+require_once("../lib/db.php");
+require_once("../lib/core.php");
+require_once("../lib/gridcoin_web_wallet.php");
+require_once("../lib/reddit_api.php");
 
 // Check if unsent rewards exists
 db_connect();

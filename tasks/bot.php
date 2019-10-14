@@ -1,10 +1,10 @@
 <?php
-require_once("settings.php");
-require_once("reddit_api.php");
-require_once("db.php");
-require_once("core.php");
+require_once("../lib/settings.php");
+require_once("../lib/reddit_api.php");
+require_once("../lib/db.php");
+require_once("../lib/core.php");
 
-$f=fopen("/tmp/gridcoin_reddit_tip_bot_lockfile","w");
+$f=fopen($lockfile,"w");
 if($f) {
         echo "Checking locks\n";
         if(!flock($f,LOCK_EX|LOCK_NB)) {
