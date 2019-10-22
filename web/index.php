@@ -44,7 +44,9 @@ foreach($topics_data as $row) {
 
 	$author_html=htmlspecialchars($author);
 	$subreddit_link="<a href='https://reddit.com/$subreddit'>$subreddit</a>";
-	$post_link="<a href='https://reddit.com/$subreddit/$post_id'>$post_id</a>";
+	$post_part=str_replace("t3_","",$post_id);
+	$post_link="<a href='https://reddit.com/$subreddit/comments/$post_part'>$post_part</a>";
+
 	echo "<tr><td>$subreddit_link</td><td>$post_link</td><td>$author_html</td><td>$comments</td></tr>\n";
 }
 
@@ -52,12 +54,29 @@ echo "</table>\n";
 
 echo "<h2>Last 20 visible messages</h2>\n";
 
-$messages_data=db_query_to_array("SELECT `subreddit`,`post_id`,`message_id`,`message`,`author`,`reply` FROM `posts` ORDER BY `timestamp` DESC LIMIT 10");
+$messages_data=db_query_to_array("SELECT `subreddit`,`post_id`,`message_id`,`message`,`author`,`reply` FROM `messages` WHERE `reply` <> '' ORDER BY `timestamp` DESC LIMIT 10");
 
 echo <<<_END
 <table>
-<tr><th>Subreddit</th><th>Message</th><th>Author</th><th>Reply</th></tr>
+<tr><th>Subreddit</th><th>Post</th><th>Message</th><th>Author</th><th>Reply</th></tr>
 _END;
+
+foreach($messages_data as $row) {
+	$subreddit=$row['subreddit'];
+	$post_id=$row['post_id'];
+	$message_id=$row['message_id'];
+	$author=$row['author'];
+	$reply=$row['reply'];
+
+	$reply_html=htmlspecialchars($reply);
+	$subreddit_link="<a href='https://reddit.com/$subreddit'>$subreddit</a>";
+	$post_part=str_replace("t3_","",$post_id);
+	$post_link="<a href='https://reddit.com/$subreddit/comments/$post_part'>$post_part</a>";
+	$message_part=str_replace("t1_","",$message_id);
+	$message_link="<a href='https://reddit.com/$subreddit/comments/$post_part/$message_part'>$message_part</a>";
+
+	echo "<tr><td>$subreddit_link</td><td>$post_link</td><td>$message_link</td><td>$author_html</td><td>$reply_html</td></tr>\n";
+}
 
 echo "</table>\n";
 
