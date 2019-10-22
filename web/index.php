@@ -2,6 +2,8 @@
 require_once("../lib/settings.php");
 require_once("../lib/db.php");
 
+db_connect();
+
 echo "<h1>Gridcoin Reddit Tip Bot Stats</h1>\n";
 
 $users_total=db_query_to_variable("SELECT count(*) FROM `users`");
