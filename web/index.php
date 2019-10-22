@@ -61,13 +61,13 @@ foreach($topics_data as $row) {
 
 echo "</table>\n";
 
-echo "<h2>Last 20 visible messages to bot</h2>\n";
+echo "<h2>Last 20 tipping messages</h2>\n";
 
 $messages_data=db_query_to_array("SELECT m.`subreddit`,m.`post_id`,m.`message_id`,
 	m.`message`,m.`author`,m.`timestamp`
 FROM `messages` AS m
 JOIN `withdrawals` AS w ON w.message_id=m.message_id
-ORDER BY `timestamp` DESC LIMIT 100");
+ORDER BY `timestamp` DESC LIMIT 20");
 
 echo <<<_END
 <table class='table_horizontal'>
