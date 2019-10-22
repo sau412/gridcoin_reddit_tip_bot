@@ -58,11 +58,11 @@ $messages_data=db_query_to_array("SELECT m.`subreddit`,m.`post_id`,m.`message_id
 	m.`message`,m.`author`,m.`timestamp`
 FROM `messages` AS m
 JOIN `withdrawals` AS w ON w.message_id=m.message_id
-ORDER BY `timestamp` DESC LIMIT 10");
+ORDER BY `timestamp` DESC LIMIT 100");
 
 echo <<<_END
 <table>
-<tr><th>Subreddit</th><th>Post</th><th>Message</th><th>Author</th></tr>
+<tr><th>Subreddit</th><th>Post</th><th>Message</th><th>Author</th><th>Timestamp</th></tr>
 _END;
 
 foreach($messages_data as $row) {
@@ -71,15 +71,15 @@ foreach($messages_data as $row) {
 	$message=$row['message'];
 	$message_id=$row['message_id'];
 	$author=$row['author'];
+	$timestamp=$row['timestamp'];
 
+	$message=str_replace("[/u/grc\\_tip\\_bot](https://www.reddit.com/u/grc_tip_bot)","/u/grc_tip_bot",$message);
 	$message_html=htmlspecialchars($message);
 	$subreddit_link="<a href='https://reddit.com/$subreddit'>$subreddit</a>";
 	$post_part=str_replace("t3_","",$post_id);
 	$post_link="<a href='https://reddit.com/$subreddit/comments/$post_part'>$post_part</a>";
-	$message_part=str_replace("t1_","",$message_id);
-	$message_link="<a href='https://reddit.com/$subreddit/comments/$post_part/$message_part'>$message_part</a>";
 
-	echo "<tr><td>$subreddit_link</td><td>$post_link</td><td>$message_html</td><td>$author_html</td></tr>\n";
+	echo "<tr><td>$subreddit_link</td><td>$post_link</td><td>$message_html</td><td>$author_html</td><td>$timestamp</td></tr>\n";
 }
 
 echo "</table>\n";
