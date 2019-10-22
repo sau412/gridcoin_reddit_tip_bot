@@ -16,7 +16,7 @@ $inbox=db_query_to_variable("SELECT count(*) FROM `inbox`");
 
 echo "users_total:$users_total";
 echo " users_positive:$users_positive";
-echo " users_balance:$users_balance"
+echo " users_balance:$users_balance";
 echo " tips_count:$tips_count";
 echo " withdrawal_count:$withdrawal_count";
 echo " topics:$topics";
