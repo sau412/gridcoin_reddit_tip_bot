@@ -25,7 +25,7 @@ echo <<<_END
 <link rel="icon" href="favicon.png" type="image/png">
 <link rel="stylesheet" type="text/css" href="style.css">
 </head>
-<table>
+<table class='table_horizontal'>
 <tr><th>Total users</th><td>$users_total</td>
 <tr><th>Users with balance</th><td>$users_positive</td>
 <tr><th>Tips count</th><td>$tips_count</td>
@@ -41,7 +41,7 @@ echo "<h2>Last 10 visible topics</h2>\n";
 $topics_data=db_query_to_array("SELECT `subreddit`,`post_id`,`author`,`comments` FROM `posts` ORDER BY `timestamp` DESC LIMIT 10");
 
 echo <<<_END
-<table>
+<table class='table_horizontal'>
 <tr><th>Subreddit</th><th>Post</th><th>Author</th><th>Comments</th></tr>
 _END;
 
@@ -70,7 +70,7 @@ JOIN `withdrawals` AS w ON w.message_id=m.message_id
 ORDER BY `timestamp` DESC LIMIT 100");
 
 echo <<<_END
-<table>
+<table class='table_horizontal'>
 <tr><th>Subreddit</th><th>Post</th><th>Message</th><th>Author</th><th>Timestamp</th></tr>
 _END;
 
