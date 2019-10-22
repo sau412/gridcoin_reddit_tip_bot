@@ -54,7 +54,8 @@ echo "</table>\n";
 
 echo "<h2>Last 20 visible messages</h2>\n";
 
-$messages_data=db_query_to_array("SELECT `subreddit`,m.`post_id`,`message_id`,`message`,`author`,`reply`,`timestamp`
+$messages_data=db_query_to_array("SELECT m.`subreddit`,m.`post_id`,m.`message_id`,
+	m.`message`,m.`author`,m.`reply`,m.`timestamp`
 FROM `messages` AS m
 JOIN `withdrawals` AS w ON w.message_id=m.message_id
 ORDER BY `timestamp` DESC LIMIT 10");
