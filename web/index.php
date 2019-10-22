@@ -4,16 +4,12 @@ require_once("../lib/db.php");
 
 db_connect();
 
-echo "<h1>Gridcoin Reddit Tip Bot Stats</h1>\n";
-
 $users_total=db_query_to_variable("SELECT count(*) FROM `users`");
 $users_positive=db_query_to_variable("SELECT count(*) FROM `users` WHERE `balance`>0");
 
 $tips_count=db_query_to_variable("SELECT count(*) FROM `withdrawals` WHERE `type`='tip'");
 $topics=db_query_to_variable("SELECT count(*) FROM `posts`");
 $messages=db_query_to_variable("SELECT count(*) FROM `messages`");
-
-echo "<h2>Stats</h2>\n";
 
 echo <<<_END
 <!DOCTYPE HTML>
@@ -25,6 +21,10 @@ echo <<<_END
 <link rel="icon" href="favicon.png" type="image/png">
 <link rel="stylesheet" type="text/css" href="style.css">
 </head>
+<body>
+<center>
+<h1>Gridcoin Reddit Tip Bot Stats</h1>
+<h2>Stats</h2>
 <table class='table_horizontal'>
 <tr><th>Total users</th><td>$users_total</td>
 <tr><th>Users with balance</th><td>$users_positive</td>
