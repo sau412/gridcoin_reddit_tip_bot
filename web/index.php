@@ -54,7 +54,10 @@ echo "</table>\n";
 
 echo "<h2>Last 20 visible messages</h2>\n";
 
-$messages_data=db_query_to_array("SELECT `subreddit`,`post_id`,`message_id`,`message`,`author`,`reply` FROM `messages` WHERE `reply` <> '' ORDER BY `timestamp` DESC LIMIT 10");
+$messages_data=db_query_to_array("SELECT `subreddit`,m.`post_id`,`message_id`,`message`,`author`,`reply`,`timestamp`
+FROM `messages` AS m
+JOIN `withdrawals` AS w ON w.message_id=m.message_id
+ORDER BY `timestamp` DESC LIMIT 10");
 
 echo <<<_END
 <table>
@@ -68,6 +71,7 @@ foreach($messages_data as $row) {
 	$author=$row['author'];
 	$reply=$row['reply'];
 
+	$message_html=htmlspecialchars($message);
 	$reply_html=htmlspecialchars($reply);
 	$subreddit_link="<a href='https://reddit.com/$subreddit'>$subreddit</a>";
 	$post_part=str_replace("t3_","",$post_id);
@@ -75,7 +79,7 @@ foreach($messages_data as $row) {
 	$message_part=str_replace("t1_","",$message_id);
 	$message_link="<a href='https://reddit.com/$subreddit/comments/$post_part/$message_part'>$message_part</a>";
 
-	echo "<tr><td>$subreddit_link</td><td>$post_link</td><td>$message_link</td><td>$author_html</td><td>$reply_html</td></tr>\n";
+	echo "<tr><td>$subreddit_link</td><td>$post_link</td><td>$message_html</td><td>$author_html</td><td>$reply_html</td></tr>\n";
 }
 
 echo "</table>\n";
