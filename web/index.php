@@ -16,6 +16,15 @@ $messages=db_query_to_variable("SELECT count(*) FROM `messages`");
 echo "<h2>Stats</h2>\n";
 
 echo <<<_END
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Gridcoin Reddit Tip Bot</title>
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
 <table>
 <tr><th>Total users</th><td>$users_total</td>
 <tr><th>Users with balance</th><td>$users_positive</td>
@@ -73,6 +82,7 @@ foreach($messages_data as $row) {
 	$author=$row['author'];
 	$timestamp=$row['timestamp'];
 
+	$author_html=htmlspecialchars($author);
 	$message=str_replace("[/u/grc\\_tip\\_bot](https://www.reddit.com/u/grc_tip_bot)","/u/grc_tip_bot",$message);
 	$message_html=htmlspecialchars($message);
 	$subreddit_link="<a href='https://reddit.com/$subreddit'>$subreddit</a>";
@@ -83,5 +93,8 @@ foreach($messages_data as $row) {
 }
 
 echo "</table>\n";
-
+echo "<hr>\n";
+echo "<p>Opensource Reddit Tipping Bot (<a href='https://github.com/sau412/gridcoin_reddit_tip_bot'>github</a>) by sau412, visit <a href='https://arikado.ru'>arikado.ru</a> to check other projects</p>\n";
+echo "</body>\n";
+echo "</html>\n";
 ?>
