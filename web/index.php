@@ -93,7 +93,7 @@ foreach($messages_data as $row) {
 }
 
 echo "</table>\n";
-echo "<hr>\n";
+echo "<hr width=10%>\n";
 echo "<p>Opensource Reddit Tipping Bot (<a href='https://github.com/sau412/gridcoin_reddit_tip_bot'>github</a>) by sau412, visit <a href='https://arikado.ru'>arikado.ru</a> to check other projects</p>\n";
 echo "</center>";
 echo "</body>\n";
