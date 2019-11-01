@@ -91,11 +91,13 @@ foreach($payout_data_array as $payout_data) {
 					echo "Address error wallet uid '$wallet_uid' for address '$address' amount '$amount' GRC\n";
 					//write_log("Address error wallet uid '$wallet_uid' for address '$address' amount '$amount' GRC");
 					db_query("UPDATE `withdrawals` SET `tx_id`='address error',`status`='error' WHERE `uid`='$uid_escaped'");
+					recalculate_balance($from_user_uid);
 					break;
 				case 'sending error':
 					echo "Sending error wallet uid '$wallet_uid' for address '$address' amount '$amount' GRC\n";
 					//write_log("Sending error wallet uid '$wallet_uid' for address '$address' amount '$amount' GRC");
 					db_query("UPDATE `withdrawals` SET `tx_id`='sending error',`status`='error' WHERE `uid`='$uid_escaped'");
+					recalculate_balance($from_user_uid);
 					break;
 				case 'received':
 				case 'pending':
