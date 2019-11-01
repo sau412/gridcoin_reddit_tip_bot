@@ -20,6 +20,10 @@ foreach($new_array as $user_info) {
 	$wallet_uid=$result->uid;
 	$uid_escaped=db_escape($uid);
 	$wallet_uid_escaped=db_escape($wallet_uid);
+
+	// If wallet_uid is invalid skip it
+	if(!$wallet_uid) continue;
+
 	db_query("UPDATE `users` SET `wallet_uid`='$wallet_uid_escaped' WHERE `uid`='$uid_escaped'");
 }
 
