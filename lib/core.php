@@ -86,8 +86,11 @@ function parse_private_message($user_uid,$message_id,$message) {
 				$address=$matches[2];
 				$amount=get_balance($user_uid);
 			}
+			$balance = get_balance($user_uid);
 			if(isset($amount) && (!is_numeric($amount) || $amount<=0)) {
 				$result="Error: amount should be a positive number";
+			} else if($amount > $balance) {
+				$result="Error: you have only $balance $currency_short";
 			} else if(isset($address) && $address!='') {
 				$message_id_escaped=db_escape($message_id);
 				$user_uid_escaped=db_escape($user_uid);
