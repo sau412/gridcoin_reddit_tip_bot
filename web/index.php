@@ -94,7 +94,7 @@ foreach($messages_data as $row) {
 
 echo "</table>\n";
 echo "<hr width=10%>\n";
-echo "<p>Opensource Reddit Tipping Bot (<a href='https://github.com/sau412/gridcoin_reddit_tip_bot'>github</a>) by sau412, visit <a href='https://arikado.ru'>arikado.ru</a> to check other projects</p>\n";
+echo "<p>Opensource Reddit Tipping Bot (<a href='https://github.com/sau412/gridcoin_reddit_tip_bot'>github</a>) by <a href='htps://arikado.xyz/'>sau412</a>.</p>\n";
 echo "<p><img src='https://arikado.xyz/counter/?site=$project_counter_name'></p>\n";
 echo "</center>\n";
 echo "</body>\n";
