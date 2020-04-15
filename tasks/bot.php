@@ -17,6 +17,7 @@ db_connect();
 reddit_access_token();
 
 // Check for new posts
+echo "Check for new posts...\n";
 foreach($reddit_allowed_subreddit_array as $subreddit) {
 	$new_posts=reddit_get_new_posts($subreddit);
 	foreach($new_posts as $post) {
@@ -44,6 +45,7 @@ foreach($reddit_allowed_subreddit_array as $subreddit) {
 }
 
 // Check old posts for new comments
+echo "Checking old posts for new comments...\n";
 $posts_array=db_query_to_array("SELECT `subreddit`,`post_id` FROM `posts` WHERE `is_updated`=0");
 foreach($posts_array as $post_data) {
 	$post_id=$post_data['post_id'];
@@ -74,6 +76,7 @@ foreach($posts_array as $post_data) {
 }
 
 // Check new messages in updated posts
+echo "Check new messages in updated posts...\n";
 $posts_array=db_query_to_array("SELECT `subreddit`,`post_id`,`author` FROM `posts` WHERE `is_updated`=1");
 //$posts_array=array(array("post_id"=>"t1_a9nxnr"));
 foreach($posts_array as $post_data) {
@@ -173,6 +176,7 @@ foreach($messages_array as $message_info) {
 }
 
 // Reply to private messages
+echo "Checking inbox messages...\n";
 $reddit_inbox=reddit_inbox();
 //var_dump($reddit_inbox);
 
@@ -216,6 +220,8 @@ foreach($messages_array as $message_info) {
 	$message_id_escaped=db_escape($message_id);
 	db_query("UPDATE `inbox` SET `reply_needed`=0,`reply`='$reply_escaped' WHERE `message_id`='$message_id_escaped'");
 }
+
+echo "Updating addresses, transactions, balances...\n";
 
 require_once("update_gridcoin_data.php");
 
