@@ -226,6 +226,8 @@ foreach($messages_array as $message_info) {
 	db_query("UPDATE `inbox` SET `reply_needed`=0,`reply`='$reply_escaped' WHERE `message_id`='$message_id_escaped'");
 }
 
+echo "DB queries $db_queries_count\n";
+
 echo "Updating addresses, transactions, balances...\n";
 
 require_once("update_gridcoin_data.php");

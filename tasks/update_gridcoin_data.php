@@ -13,6 +13,7 @@ require_once("../lib/reddit_api.php");
 db_connect();
 
 // Get addresses for new users
+echo "Generating addresss for new users...\n";
 $new_array=db_query_to_array("SELECT `uid` FROM `users` WHERE `wallet_uid` IS NULL");
 foreach($new_array as $user_info) {
 	$uid=$user_info['uid'];
@@ -28,6 +29,7 @@ foreach($new_array as $user_info) {
 }
 
 // Update addresses data for all users
+echo "Updating address and received data for all users...\n";
 $pending_array=db_query_to_array("SELECT `uid`,`wallet_uid`,`received` FROM `users` WHERE `wallet_uid` IS NOT NULL");
 foreach($pending_array as $user_info) {
 	$uid=$user_info['uid'];
@@ -51,6 +53,7 @@ foreach($pending_array as $user_info) {
 }
 
 // Send tips if possible
+echo "Sending tips...\n";
 $unsent_tips_array=db_query_to_array("SELECT `uid`,`to_user_uid` FROM `withdrawals` WHERE `address` IS NULL");
 foreach($unsent_tips_array as $tip_info) {
 	$uid=$tip_info['uid'];
@@ -69,6 +72,7 @@ foreach($unsent_tips_array as $tip_info) {
 $current_balance=grc_web_get_balance();
 echo "Current balance: $current_balance\n";
 
+echo "Sending payouts...\n";
 // Get payout information for GRC
 $payout_data_array=db_query_to_array("SELECT `uid`,`message_id`,`type`,`from_user_uid`,`to_user_uid`,`address`,`amount`,`wallet_uid` FROM `withdrawals`
 					WHERE `status` IN ('requested','processing') AND `address` IS NOT NULL");
