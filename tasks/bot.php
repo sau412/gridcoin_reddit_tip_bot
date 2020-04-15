@@ -46,8 +46,9 @@ foreach($reddit_allowed_subreddit_array as $subreddit) {
 }
 
 // Check old posts for new comments
-echo "Checking old posts for new comments...\n";
-$posts_array=db_query_to_array("SELECT `subreddit`,`post_id`,`comments` FROM `posts` WHERE `is_updated`=0");
+echo "Checking old posts for new comments (for last six months only)...\n";
+$posts_array=db_query_to_array("SELECT `subreddit`,`post_id`,`comments` FROM `posts`
+									WHERE `is_updated`=0 AND DATE_SUB(NOW(),INTERVAL 6 MONTHS)<`timestamp`");
 foreach($posts_array as $post_data) {
 	$post_id = $post_data['post_id'];
 	$subreddit = $post_data['subreddit'];

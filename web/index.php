@@ -36,9 +36,10 @@ echo <<<_END
 _END;
 
 
-echo "<h2>Last 10 visible topics</h2>\n";
+echo "<h2>Last 10 updated posts</h2>\n";
 
-$topics_data=db_query_to_array("SELECT `subreddit`,`post_id`,`author`,`comments` FROM `posts` ORDER BY `timestamp` DESC LIMIT 10");
+$topics_data=db_query_to_array("SELECT `subreddit`,`post_id`,`author`,`comments`
+									FROM `posts` ORDER BY `timestamp` DESC LIMIT 10");
 
 echo <<<_END
 <table class='table_horizontal'>
