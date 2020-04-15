@@ -143,4 +143,3 @@ function reddit_get_new_posts($subreddit) {
 	return $data->data->children[0];
 }
 ?>
-
