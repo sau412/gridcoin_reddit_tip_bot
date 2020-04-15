@@ -19,6 +19,7 @@ reddit_access_token();
 // Check for new posts
 echo "Check for new posts...\n";
 foreach($reddit_allowed_subreddit_array as $subreddit) {
+	echo "Subreddit $subreddit\n";
 	$new_posts=reddit_get_new_posts($subreddit);
 	foreach($new_posts as $post) {
 		if(!property_exists($post,"name")) continue;
@@ -46,12 +47,16 @@ foreach($reddit_allowed_subreddit_array as $subreddit) {
 
 // Check old posts for new comments
 echo "Checking old posts for new comments...\n";
-$posts_array=db_query_to_array("SELECT `subreddit`,`post_id` FROM `posts` WHERE `is_updated`=0");
+$posts_array=db_query_to_array("SELECT `subreddit`,`post_id`,`comments` FROM `posts` WHERE `is_updated`=0");
 foreach($posts_array as $post_data) {
-	$post_id=$post_data['post_id'];
-	$subreddit=$post_data['subreddit'];
-	if(!in_array($subreddit,$reddit_allowed_subreddit_array)) continue;
-
+	$post_id = $post_data['post_id'];
+	$subreddit = $post_data['subreddit'];
+	$prev_comments = $post_data['comments'];
+	if(!in_array($subreddit,$reddit_allowed_subreddit_array)) {
+		echo "Subreddit $subreddit is not allowed now\n";
+		continue;
+	}
+	
 	$message_info=reddit_get_message_info($post_id);
 	if(!property_exists($message_info->data,"num_comments")) {
 		echo "No num_comments property for post $post_id\n";
@@ -61,7 +66,7 @@ foreach($posts_array as $post_data) {
 	$comments=$message_info->data->num_comments;
 	$author=$message_info->data->author;
 	$post_id_escaped=db_escape($post_id);
-	$prev_comments=db_query_to_variable("SELECT `comments` FROM `posts` WHERE `post_id`='$post_id_escaped'");
+	//$prev_comments=db_query_to_variable("SELECT `comments` FROM `posts` WHERE `post_id`='$post_id_escaped'");
 
 	echo "Old posts: subreddit '$subreddit' Post_id '$post_id' prev_comments '$prev_comments' comments '$comments'\n";
 	if($comments!=$prev_comments || $prev_comments==='') {
