@@ -218,4 +218,6 @@ foreach($messages_array as $message_info) {
 }
 
 require_once("update_gridcoin_data.php");
+
+echo "DB queries $db_queries_count\n";
 ?>
