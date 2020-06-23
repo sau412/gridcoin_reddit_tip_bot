@@ -30,16 +30,17 @@ foreach($new_array as $user_info) {
 
 // Update addresses data for all users
 echo "Updating address and received data for all users...\n";
-$pending_array = db_query_to_array("SELECT `uid`,`wallet_uid`,`received` FROM `users` WHERE `wallet_uid` IS NOT NULL");
+$pending_array = db_query_to_array("SELECT `uid`,`address`,`wallet_uid`,`received` FROM `users` WHERE `wallet_uid` IS NOT NULL");
 foreach($pending_array as $user_info) {
 	$uid = $user_info['uid'];
 	$address_uid = $user_info['wallet_uid'];
+	$address_exists = $user_info['address'];
 	$prev_received = $user_info['received'];
 	$result = grc_web_get_receiving_address($address_uid);
 	$address = $result->address;
 	$received = $result->received;
 
-	if($address != '' && $received != $prev_received) {
+	if($address_exists == '' || ($address != '' && $received != $prev_received)) {
 		$uid_escaped = db_escape($uid);
 		$address_escaped = db_escape($address);
 		$received_escaped = db_escape($received);
