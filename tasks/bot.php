@@ -69,7 +69,7 @@ foreach($posts_array as $post_data) {
 	$post_id_escaped = db_escape($post_id);
 
 	echo "Old posts: subreddit '$subreddit' Post_id '$post_id' prev_comments '$prev_comments' comments '$comments'\n";
-	if($comments != $prev_comments || $prev_comments === '') {
+	if($comments != $prev_comments || $prev_comments === '' || rand(0, 100) == 0) {
 		echo "New comments in post $post_id\n";
 		$comments_escaped = db_escape($comments);
 		$subreddit_escaped = db_escape($subreddit);
