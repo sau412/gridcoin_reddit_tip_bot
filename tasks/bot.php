@@ -33,7 +33,7 @@ foreach($reddit_allowed_subreddit_array as $subreddit) {
 		$prev_comments=db_query_to_variable("SELECT `comments` FROM `posts` WHERE `post_id`='$post_id_escaped'");
 
 		echo "New posts: subreddit '$subreddit' post_id '$post_id' prev_comments '$prev_comments' comments '$comments'\n";
-		if($comments!=$prev_comments || $prev_comments==='') {
+		if($comments != $prev_comments || $prev_comments === '') {
 			echo "New comments in post $post_id\n";
 			$comments_escaped=db_escape($comments);
 			$subreddit_escaped=db_escape($subreddit);
@@ -47,10 +47,8 @@ foreach($reddit_allowed_subreddit_array as $subreddit) {
 
 // Check old posts for new comments
 echo "Checking old posts for new comments (for last six months only)...\n";
-$posts_array=db_query_to_array("SELECT p.`subreddit`, p.`post_id`, count(*) AS comments FROM `posts` AS p
-									LEFT OUTER JOIN `messages` AS m ON m.post_id = p.post_id
-									WHERE p.`is_updated`=0 AND DATE_SUB(NOW(),INTERVAL 6 MONTH) < p.`timestamp`
-									GROUP BY p.`subreddit`, p.`post_id`");
+$posts_array=db_query_to_array("SELECT `subreddit`, `post_id`, `comments` FROM `posts`
+									WHERE `is_updated` = 0 AND DATE_SUB(NOW(), INTERVAL 6 MONTH) < `timestamp`");
 foreach($posts_array as $post_data) {
 	$post_id = $post_data['post_id'];
 	$subreddit = $post_data['subreddit'];
@@ -60,26 +58,25 @@ foreach($posts_array as $post_data) {
 		continue;
 	}
 	
-	$message_info=reddit_get_message_info($post_id);
-	if(!property_exists($message_info->data,"num_comments")) {
+	$message_info = reddit_get_message_info($post_id);
+	if(!property_exists($message_info->data, "num_comments")) {
 		echo "No num_comments property for post $post_id\n";
 		continue;
 	}
 
-	$comments=$message_info->data->num_comments;
-	$author=$message_info->data->author;
-	$post_id_escaped=db_escape($post_id);
-	//$prev_comments=db_query_to_variable("SELECT `comments` FROM `posts` WHERE `post_id`='$post_id_escaped'");
+	$comments = $message_info->data->num_comments;
+	$author = $message_info->data->author;
+	$post_id_escaped = db_escape($post_id);
 
 	echo "Old posts: subreddit '$subreddit' Post_id '$post_id' prev_comments '$prev_comments' comments '$comments'\n";
-	if($comments!=$prev_comments || $prev_comments==='') {
+	if($comments != $prev_comments || $prev_comments === '') {
 		echo "New comments in post $post_id\n";
-		$comments_escaped=db_escape($comments);
-		$subreddit_escaped=db_escape($subreddit);
-		$author_escaped=db_escape($author);
-		db_query("INSERT INTO `posts` (`subreddit`,`post_id`,`author`,`comments`)
-				VALUES ('$subreddit_escaped','$post_id_escaped','$author_escaped','$comments_escaped')
-				ON DUPLICATE KEY UPDATE `comments`='$comments_escaped',`is_updated`=1");
+		$comments_escaped = db_escape($comments);
+		$subreddit_escaped = db_escape($subreddit);
+		$author_escaped = db_escape($author);
+		db_query("INSERT INTO `posts` (`subreddit`, `post_id`, `author`, `comments`)
+				VALUES ('$subreddit_escaped', '$post_id_escaped', '$author_escaped', '$comments_escaped')
+				ON DUPLICATE KEY UPDATE `comments` = '$comments_escaped', `is_updated` = 1");
 	}
 }
 
