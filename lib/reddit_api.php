@@ -114,7 +114,10 @@ function reddit_get_message_info($id) {
 	$result=reddit_send_query($reddit_message_info_url,$query,"get");
 	$data=json_decode($result);
 //var_dump($data);
-	return $data->data->children[0];
+	if(property_exists($data, "data") && property_exists($data->data, "children")) {
+		return $data->data->children[0];
+	}
+	return null;
 }
 
 function reddit_get_message_tree($id) {

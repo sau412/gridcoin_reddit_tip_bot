@@ -59,6 +59,11 @@ foreach($posts_array as $post_data) {
 	}
 	
 	$message_info = reddit_get_message_info($post_id);
+	if(!property_exists($message_info, "data")) {
+		echo "No data exists, skipping\n";
+		continue;
+	}
+
 	if(!property_exists($message_info->data, "num_comments")) {
 		echo "No num_comments property for post $post_id\n";
 		continue;
