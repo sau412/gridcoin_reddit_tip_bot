@@ -114,7 +114,7 @@ function reddit_get_message_info($id) {
 	$result=reddit_send_query($reddit_message_info_url,$query,"get");
 	$data=json_decode($result);
 //var_dump($data);
-	if(property_exists($data, "data") && property_exists($data->data, "children")) {
+	if($data && property_exists($data, "data") && property_exists($data->data, "children")) {
 		return $data->data->children[0];
 	}
 	return null;
